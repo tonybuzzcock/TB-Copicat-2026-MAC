@@ -1,0 +1,27 @@
+TB Copicat IC300 - CLAP, VST3 and AU for macOS 11 or later
+(Apple Silicon and Intel)
+
+1. Copy each plugin to its folder in your user Library
+   (in Finder: Go menu > Go to Folder..., then paste the path):
+
+     TB Copicat IC300.vst3       ->  ~/Library/Audio/Plug-Ins/VST3/
+     TB Copicat IC300.component  ->  ~/Library/Audio/Plug-Ins/Components/
+     TB Copicat IC300.clap       ->  ~/Library/Audio/Plug-Ins/CLAP/
+
+   Create a folder if it does not exist. You only need the formats your
+   DAW uses: Reaper and FL Studio load VST3 (Reaper also loads CLAP and AU),
+   Logic and GarageBand load AU.
+
+2. These plugins are not notarised by Apple, so macOS quarantines them after
+   download. Open Terminal and paste this one command to clear that:
+
+     xattr -dr com.apple.quarantine ~/Library/Audio/Plug-Ins/VST3/"TB Copicat IC300.vst3" ~/Library/Audio/Plug-Ins/Components/"TB Copicat IC300.component" ~/Library/Audio/Plug-Ins/CLAP/"TB Copicat IC300.clap"
+
+   (It may report "No such file" for a format you did not copy; that is fine.)
+
+3. Rescan plugins in your DAW (or restart it). The plugin appears as
+   "TB Copicat IC300" by TB.
+
+Presets are kept in
+  ~/Library/Application Support/TB/TB Copicat IC300/Presets.txt
+and are shared by all three formats.
