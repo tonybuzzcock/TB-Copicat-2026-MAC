@@ -45,7 +45,7 @@ const clap_plugin_descriptor_t kDescriptor = {
     kPluginId,
     "TB Copicat IC300",
     "TB",
-    "https://github.com/tonybuzzcock/TB-Copicat-MAC",
+    "https://github.com/tonybuzzcock/TB-Copicat-2026-MAC",
     "",
     "",
     "1.0.0",
