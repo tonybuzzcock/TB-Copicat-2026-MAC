@@ -6,6 +6,10 @@ on:
     tags: [ 'v*' ]
   pull_request:
   workflow_dispatch:
+    inputs:
+      runner:
+        description: 'Mac runner (macos-15-intel, or macos-15 for Apple Silicon)'
+        default: 'macos-15-intel'
 
 permissions:
   contents: write   # tagged builds attach the plugins to a Release; main publishes panel screenshots
@@ -45,7 +49,9 @@ jobs:
 
   mac:
     name: CLAP, VST3, AU for macOS 11+ (Apple Silicon + Intel)
-    runs-on: macos-15
+    # Intel runner by default: GitHub's Apple Silicon runners are often too busy
+    # to pick up jobs. Either runner builds the same universal plugins.
+    runs-on: ${{ inputs.runner || 'macos-15-intel' }}
     steps:
       - uses: actions/checkout@v4
 
@@ -80,15 +86,17 @@ jobs:
       - name: Preset store
         run: build/preset_test
 
-      - name: CLAP in a test host (Apple Silicon)
-        run: build/clap_host_test "build/plugins/$NAME.clap/Contents/MacOS/$NAME"
-
-      - name: CLAP in a test host (Intel, via Rosetta)
+      - name: CLAP in a test host (runner's own architecture)
         run: |
-          if arch -x86_64 /usr/bin/true 2>/dev/null; then
+          echo "runner: $(uname -m)"
+          build/clap_host_test "build/plugins/$NAME.clap/Contents/MacOS/$NAME"
+
+      - name: CLAP in a test host (other architecture)
+        run: |
+          if [ "$(uname -m)" = "arm64" ] && arch -x86_64 /usr/bin/true 2>/dev/null; then
             arch -x86_64 build/clap_host_test "build/plugins/$NAME.clap/Contents/MacOS/$NAME"
           else
-            echo "::warning::Rosetta is not available on this runner; the Intel slice was built and checked but not run"
+            echo "::notice::Intel runner: the Apple Silicon slice was built and checked with lipo/vtool but cannot run here"
           fi
 
       - name: Echo model
