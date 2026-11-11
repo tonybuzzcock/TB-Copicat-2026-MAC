@@ -13,6 +13,7 @@
 #include "Editor.h"
 #include "Params.h"
 #include "Presets.h"
+#include "TBLogo.h"
 
 #include <cmath>
 #include <cstdio>
@@ -95,30 +96,6 @@ NSFont* plainFont (CGFloat size)
 {
     NSFont* f = [NSFont fontWithName: @"Helvetica" size: size];
     return f ? f : [NSFont systemFontOfSize: size];
-}
-
-// First installed font from a list of PostScript names, else the fallback.
-NSFont* firstFont (const char* const* names, int count, CGFloat size, NSFont* fallback)
-{
-    for (int i = 0; i < count; ++i)
-    {
-        NSFont* f = [NSFont fontWithName: [NSString stringWithUTF8String: names[i]] size: size];
-        if (f) return f;
-    }
-    return fallback;
-}
-
-// Eurostile for the TB mark when it is installed (it cannot be bundled), else Helvetica.
-NSFont* markBoldFont (CGFloat size)
-{
-    const char* const names[] = { "Eurostile-Bold", "EurostileBold", "Eurostile-Heavy", "EurostileLTStd-Bold", "EurostileT-Bold" };
-    return firstFont (names, 5, size, boldFont (size));
-}
-
-NSFont* markPlainFont (CGFloat size)
-{
-    const char* const names[] = { "Eurostile", "Eurostile-Regular", "EurostileLTStd", "EurostileT-Regular" };
-    return firstFont (names, 4, size, plainFont (size));
 }
 
 void drawText (const char* s, NSFont* font, NSColor* color, CGFloat cx, CGFloat cy)
@@ -279,12 +256,8 @@ void drawTextLeft (const char* s, NSFont* font, NSColor* color, CGFloat x, CGFlo
     drawText ("TAPE ECHO", boldFont (15.0), ink, 400, 366);
     drawText ("IC 300", plainFont (13.0), ink, 400, 388);
 
-    // Owner's mark in the strip's corner: red TB over "Electronic", straight on the silver
-    {
-        const NSRect plate = NSMakeRect (24.5, 507.5, 100.0, 56.0);
-        drawText ("TB", markBoldFont (28.0), rgb (200, 30, 30), NSMidX (plate), plate.origin.y + 21.0);
-        drawText ("Electronic", markPlainFont (12.0), ink, NSMidX (plate), plate.origin.y + 44.0);
-    }
+    // The TB electronic logo in the strip's corner, straight on the silver
+    tblogo::drawTBLogo (NSMakeRect (20.0, 488.0, 130.0, 72.0));
 }
 
 - (void) drawScaleForCtl: (const Ctl&) c
