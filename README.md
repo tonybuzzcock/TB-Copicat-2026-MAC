@@ -16,10 +16,13 @@ Settings are saved with your DAW session, and the plugin reports its latency
 ## Install
 
 Download the latest green run under **Actions → Artifacts → TB-Copicat-IC300-mac**
-(or a Release), unzip it, and follow `INSTALL.txt`: copy the formats you want into
-`~/Library/Audio/Plug-Ins/VST3`, `.../Components` or `.../CLAP`, then run the one
-Terminal command it gives to clear macOS's download quarantine (the plugins are
-ad-hoc signed, not notarised).
+(or a Release), unzip it, and follow `INSTALL.txt`. Copy the formats you want
+into the `VST3`, `Components` or `CLAP` folder. Those are in
+`/Library/Audio/Plug-Ins/` (the main Library) or `~/Library/Audio/Plug-Ins/`
+(your user Library); use whichever one your other plugins are in. Then run the
+short Terminal lines `INSTALL.txt` gives for that folder. The plugins are ad-hoc
+signed, not notarised, so those lines clear macOS's download tags and re-sign
+the plugins on your Mac.
 
 ## Controls
 
